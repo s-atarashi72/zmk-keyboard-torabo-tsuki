@@ -6,6 +6,7 @@ type: shield
 features:
   - keys
   - studio
+  - pointing_device
 outputs:
   - usb
   - ble

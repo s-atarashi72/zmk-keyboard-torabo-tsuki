@@ -1,6 +1,9 @@
 #include <dt-bindings/zmk/matrix_transform.h>
 #include "torabo_tsuki_layouts.dtsi"
 
+#include <dt-bindings/zmk/input_transform.h>
+#include <input/processors.dtsi>
+
 / {
     chosen {
         zmk,physical-layout = &physical_layout_l;
@@ -86,7 +89,19 @@
 
     trackball_listener: trackball_listener {
         compatible = "zmk,input-listener";
-        device = <&trackball>;
+        device     = <&trackball>;
+        /* ★通常レイヤー用の input-processors を一切宣言しない★
+        *   → XY がそのままカーソル移動になる                       */
+
+        /* ──レイヤー3だけスクロール── */
+        scroll_override {
+            layers = <3>;                            /* scroll-layers と同じ番号 */
+            input-processors = <
+                &zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)
+                &zip_xy_to_scroll_mapper
+                &zip_scroll_scaler 5 1
+            >;
+        };
     };
 
     vbatt: vbatt {
@@ -157,7 +172,7 @@
         /*   optional features   */
         power-gpios = <&bmp 14 GPIO_ACTIVE_HIGH>;
         // snipe-layers = <1>;
-        // scroll-layers = <2 3>;
-        automouse-layer = <1>;
+        scroll-layers = <3>;
+        // automouse-layer = <1>;
     };
 };
