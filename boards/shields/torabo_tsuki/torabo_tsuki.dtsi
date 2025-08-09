@@ -12,9 +12,8 @@
             compatible = "zmk,input-processor-transform";
             #input-processor-cells = <1>;
             type    = <INPUT_EV_REL>;
-            /* 横=HWHEEL を X側、縦=WHEEL を Y側として明示 */
-            x-codes = <INPUT_REL_HWHEEL>;
-            y-codes = <INPUT_REL_WHEEL>;
+            x-codes = <INPUT_REL_HWHEEL INPUT_REL_HWHEEL_HI_RES>;
+            y-codes = <INPUT_REL_WHEEL  INPUT_REL_WHEEL_HI_RES>;
         };
     };
 };
