@@ -6,11 +6,19 @@
 
 / {
     input_processors {
-        my_scroll_inverter: my_scroll_inverter {
+        inv_hwheel: inv_hwheel {
             compatible = "zmk,input-processor-transform";
             #input-processor-cells = <1>;
             type = <INPUT_EV_REL>;
-            /* 横スクロール(HWHEEL)と縦スクロール(WHEEL)を明示 */
+            /* required項目として x/y 両方の codes を宣言する */
+            x-codes = <INPUT_REL_HWHEEL>;
+            y-codes = <INPUT_REL_WHEEL>;
+        };
+
+        inv_wheel: inv_wheel {
+            compatible = "zmk,input-processor-transform";
+            #input-processor-cells = <1>;
+            type = <INPUT_EV_REL>;
             x-codes = <INPUT_REL_HWHEEL>;
             y-codes = <INPUT_REL_WHEEL>;
         };
@@ -108,9 +116,10 @@
             layers = <3>;
             input-processors = <
                 &zip_xy_to_scroll_mapper
-                &my_scroll_inverter (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
+                &inv_hwheel (INPUT_TRANSFORM_X_INVERT)
+                &inv_wheel  (INPUT_TRANSFORM_Y_INVERT)
                 &zip_scroll_scaler 5 1
-            >;
+        >;
         };
     };
 
