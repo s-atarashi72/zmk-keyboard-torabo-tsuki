@@ -4,6 +4,23 @@
 #include <dt-bindings/zmk/input_transform.h>
 #include <input/processors.dtsi>
 
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+#include <dt-bindings/zmk/input_transform.h>
+
+/ {
+    input_processors {
+        /* ホイール系のコードを明示して反転対象を固定化する */
+        my_scroll_inverter: my_scroll_inverter {
+            compatible = "zmk,input-processor-transform";
+            #input-processor-cells = <1>;
+            type    = <INPUT_EV_REL>;
+            /* X=水平ホイール, Y=垂直ホイール を明示 */
+            x-codes = <INPUT_REL_HWHEEL>;
+            y-codes = <INPUT_REL_WHEEL>;
+        };
+    };
+};
+
 / {
     chosen {
         zmk,physical-layout = &physical_layout_l;
@@ -95,7 +112,7 @@
             layers = <3>;
             input-processors = <
                 &zip_xy_to_scroll_mapper
-                &zip_scroll_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
+                &my_scroll_inverter (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
                 &zip_scroll_scaler 6 1
             >;
         };
