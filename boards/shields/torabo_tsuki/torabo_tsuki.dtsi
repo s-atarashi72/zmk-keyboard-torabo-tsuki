@@ -166,10 +166,6 @@
         spi-max-frequency = <2000000>;
         irq-gpios = <&gpio0 23 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 
-        #include <zephyr/dt-bindings/input/input-event-codes.h>
-        evt-type = <INPUT_EV_REL>;
-        x-input-code = <INPUT_REL_X>;
-        y-input-code = <INPUT_REL_Y>;
         force-awake;
 
         /*   optional features   */
