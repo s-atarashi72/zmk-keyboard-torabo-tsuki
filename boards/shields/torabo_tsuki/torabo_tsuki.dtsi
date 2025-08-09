@@ -1,19 +1,27 @@
 #include <dt-bindings/zmk/matrix_transform.h>
-#include "torabo_tsuki_layouts.dtsi"
-
 #include <dt-bindings/zmk/input_transform.h>
+#include "torabo_tsuki_layouts.dtsi"
 #include <input/processors.dtsi>
-
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 
 / {
     input_processors {
-        my_scroll_inverter: my_scroll_inverter {
+        /* 水平ホイール(HWHEEL)だけを対象にする反転用 */
+        my_hwheel_inverter: my_hwheel_inverter {
             compatible = "zmk,input-processor-transform";
             #input-processor-cells = <1>;
             type    = <INPUT_EV_REL>;
-            x-codes = <INPUT_REL_HWHEEL INPUT_REL_HWHEEL_HI_RES>;
-            y-codes = <INPUT_REL_WHEEL  INPUT_REL_WHEEL_HI_RES>;
+            x-codes = <INPUT_REL_HWHEEL>; /* X側＝水平スクロール */
+            /* y-codes は未指定（水平だけ対象） */
+        };
+
+        /* 垂直ホイール(WHEEL)だけを対象にする反転用 */
+        my_wheel_inverter: my_wheel_inverter {
+            compatible = "zmk,input-processor-transform";
+            #input-processor-cells = <1>;
+            type    = <INPUT_EV_REL>;
+            /* x-codes は未指定（垂直だけ対象） */
+            y-codes = <INPUT_REL_WHEEL>;  /* Y側＝垂直スクロール */
         };
     };
 };
@@ -108,7 +116,9 @@
         scroll_override {
             layers = <3>;
             input-processors = <
-                &my_scroll_inverter (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
+                &zip_xy_to_scroll_mapper
+                &my_hwheel_inverter (INPUT_TRANSFORM_X_INVERT)
+                &my_wheel_inverter  (INPUT_TRANSFORM_Y_INVERT)
                 &zip_scroll_scaler 5 1
             >;
         };
@@ -182,7 +192,7 @@
         /*   optional features   */
         power-gpios = <&bmp 14 GPIO_ACTIVE_HIGH>;
         // snipe-layers = <1>;
-        scroll-layers = <3>;
+        // scroll-layers = <3>;
         // automouse-layer = <1>;
     };
 };
