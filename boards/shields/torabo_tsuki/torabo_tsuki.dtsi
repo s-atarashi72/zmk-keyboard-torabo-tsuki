@@ -6,22 +6,13 @@
 
 / {
     input_processors {
-        /* 水平(HWHEEL)用：Xだけ反転させたいが、y-codes も必須なので記述する */
-        my_hwheel_inverter: my_hwheel_inverter {
+        my_scroll_inverter: my_scroll_inverter {
             compatible = "zmk,input-processor-transform";
             #input-processor-cells = <1>;
-            type    = <INPUT_EV_REL>;
-            x-codes = <INPUT_REL_HWHEEL>;  /* 水平スクロール */
-            y-codes = <INPUT_REL_WHEEL>;   /* 必須プロパティを満たすために記述（Yは反転しない） */
-        };
-
-        /* 垂直(WHEEL)用：Yだけ反転させたいが、x-codes も必須なので記述する */
-        my_wheel_inverter: my_wheel_inverter {
-            compatible = "zmk,input-processor-transform";
-            #input-processor-cells = <1>;
-            type    = <INPUT_EV_REL>;
-            x-codes = <INPUT_REL_HWHEEL>;  /* 必須プロパティを満たすために記述（Xは反転しない） */
-            y-codes = <INPUT_REL_WHEEL>;   /* 垂直スクロール */
+            type = <INPUT_EV_REL>;
+            /* 横スクロール(HWHEEL)と縦スクロール(WHEEL)を明示 */
+            x-codes = <INPUT_REL_HWHEEL>;
+            y-codes = <INPUT_REL_WHEEL>;
         };
     };
 };
@@ -117,8 +108,7 @@
             layers = <3>;
             input-processors = <
                 &zip_xy_to_scroll_mapper
-                &my_hwheel_inverter (INPUT_TRANSFORM_X_INVERT)
-                &my_wheel_inverter  (INPUT_TRANSFORM_Y_INVERT)
+                &my_scroll_inverter (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
                 &zip_scroll_scaler 5 1
             >;
         };
