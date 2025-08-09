@@ -6,22 +6,22 @@
 
 / {
     input_processors {
-        /* 水平ホイール(HWHEEL)だけを対象にする反転用 */
+        /* 水平(HWHEEL)用：Xだけ反転させたいが、y-codes も必須なので記述する */
         my_hwheel_inverter: my_hwheel_inverter {
             compatible = "zmk,input-processor-transform";
             #input-processor-cells = <1>;
             type    = <INPUT_EV_REL>;
-            x-codes = <INPUT_REL_HWHEEL>; /* X側＝水平スクロール */
-            /* y-codes は未指定（水平だけ対象） */
+            x-codes = <INPUT_REL_HWHEEL>;  /* 水平スクロール */
+            y-codes = <INPUT_REL_WHEEL>;   /* 必須プロパティを満たすために記述（Yは反転しない） */
         };
 
-        /* 垂直ホイール(WHEEL)だけを対象にする反転用 */
+        /* 垂直(WHEEL)用：Yだけ反転させたいが、x-codes も必須なので記述する */
         my_wheel_inverter: my_wheel_inverter {
             compatible = "zmk,input-processor-transform";
             #input-processor-cells = <1>;
             type    = <INPUT_EV_REL>;
-            /* x-codes は未指定（垂直だけ対象） */
-            y-codes = <INPUT_REL_WHEEL>;  /* Y側＝垂直スクロール */
+            x-codes = <INPUT_REL_HWHEEL>;  /* 必須プロパティを満たすために記述（Xは反転しない） */
+            y-codes = <INPUT_REL_WHEEL>;   /* 垂直スクロール */
         };
     };
 };
