@@ -5,6 +5,17 @@
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 
 / {
+    input_processors {
+        /* WHEEL(縦) / HWHEEL(横) を“両方”この変換で扱う */
+        inv_wheel_both: inv_wheel_both {
+            compatible = "zmk,input-processor-transform";
+            #input-processor-cells = <1>;
+            type    = <INPUT_EV_REL>;
+            x-codes = <INPUT_REL_HWHEEL>; /* 横スクロール対象 */
+            y-codes = <INPUT_REL_WHEEL>;  /* 縦スクロール対象 */
+        };
+    };
+
     chosen {
         zmk,physical-layout = &physical_layout_l;
         zmk,kscan = &kscan0;
@@ -94,9 +105,8 @@
         scroll_override {
             layers = <3>;
             input-processors = <
-                &zip_xy_transform  (INPUT_TRANSFORM_X_INVERT)
-                &zip_xy_transform  (INPUT_TRANSFORM_Y_INVERT)
                 &zip_xy_to_scroll_mapper
+                &inv_wheel_both (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
                 &zip_scroll_scaler 5 1
             >;
         };
@@ -170,7 +180,7 @@
         /*   optional features   */
         power-gpios = <&bmp 14 GPIO_ACTIVE_HIGH>;
         // snipe-layers = <1>;
-        scroll-layers = <3>;
+        // scroll-layers = <3>;
         // automouse-layer = <1>;
     };
 };
