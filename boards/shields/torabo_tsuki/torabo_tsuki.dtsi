@@ -6,13 +6,21 @@
 
 / {
     input_processors {
-        /* WHEEL(縦) / HWHEEL(横) を“両方”この変換で扱う */
-        inv_wheel_both: inv_wheel_both {
+        inv_h: inv_h {
             compatible = "zmk,input-processor-transform";
             #input-processor-cells = <1>;
-            type    = <INPUT_EV_REL>;
-            x-codes = <INPUT_REL_HWHEEL>; /* 横スクロール対象 */
-            y-codes = <INPUT_REL_WHEEL>;  /* 縦スクロール対象 */
+            type = <INPUT_EV_REL>;
+            /* 横スクロールを確実に対象化 */
+            x-codes = <INPUT_REL_HWHEEL>;
+            y-codes = <INPUT_REL_WHEEL>;
+        };
+
+        inv_v: inv_v {
+            compatible = "zmk,input-processor-transform";
+            #input-processor-cells = <1>;
+            type = <INPUT_EV_REL>;
+            x-codes = <INPUT_REL_HWHEEL>;
+            y-codes = <INPUT_REL_WHEEL>;
         };
     };
 
