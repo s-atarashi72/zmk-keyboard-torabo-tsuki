@@ -5,24 +5,6 @@
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 
 / {
-    input_processors {
-        inv_h: inv_h {
-            compatible = "zmk,input-processor-transform";
-            #input-processor-cells = <1>;
-            type = <INPUT_EV_REL>;
-            x-codes = <INPUT_REL_HWHEEL>;
-            y-codes = <INPUT_REL_WHEEL>;
-        };
-
-        inv_v: inv_v {
-            compatible = "zmk,input-processor-transform";
-            #input-processor-cells = <1>;
-            type = <INPUT_EV_REL>;
-            x-codes = <INPUT_REL_HWHEEL>;
-            y-codes = <INPUT_REL_WHEEL>;
-        };
-    };
-
     chosen {
         zmk,physical-layout = &physical_layout_l;
         zmk,kscan = &kscan0;
@@ -112,13 +94,11 @@
         scroll_override {
             layers = <3>;
             input-processors = <
-                &zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
+                &zip_xy_to_scroll_mapper
+                // &zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
+                &zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)
                 &zip_scroll_transform (INPUT_TRANSFORM_X_INVERT)
                 &zip_scroll_scaler 5 1
-                // &zip_xy_to_scroll_mapper
-                // &inv_h (INPUT_TRANSFORM_X_INVERT)
-                // &inv_v (INPUT_TRANSFORM_Y_INVERT)
-                // &zip_scroll_scaler 5 1
             >;
         };
     };
