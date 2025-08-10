@@ -103,7 +103,8 @@
         scroll_inverter: scroll_inverter {
             compatible = "zmk,input-processor-transform";
             #input-processor-cells = <0>;
-            transforms = <(INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
+            invert-x;
+            invert-y;
         };
     };
 
