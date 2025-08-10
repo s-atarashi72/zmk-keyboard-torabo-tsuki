@@ -95,16 +95,9 @@
             layers = <3>;
             input-processors = <
                 &zip_xy_to_scroll_mapper
-                &scroll_inverter
+                &zip_scroll_transform (INPUT_TRANSFORM_X_INVERT) (INPUT_TRANSFORM_Y_INVERT)
                 &zip_scroll_scaler 5 1
             >;
-        };
-
-        scroll_inverter: scroll_inverter {
-            compatible = "zmk,input-processor-transform";
-            #input-processor-cells = <0>;
-            invert-x;
-            invert-y;
         };
     };
 
