@@ -10,7 +10,6 @@
             compatible = "zmk,input-processor-transform";
             #input-processor-cells = <1>;
             type = <INPUT_EV_REL>;
-            /* 横スクロールを確実に対象化 */
             x-codes = <INPUT_REL_HWHEEL>;
             y-codes = <INPUT_REL_WHEEL>;
         };
@@ -114,7 +113,8 @@
             layers = <3>;
             input-processors = <
                 &zip_xy_to_scroll_mapper
-                &inv_wheel_both (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
+                &inv_h (INPUT_TRANSFORM_X_INVERT)
+                &inv_v (INPUT_TRANSFORM_Y_INVERT)
                 &zip_scroll_scaler 5 1
             >;
         };
